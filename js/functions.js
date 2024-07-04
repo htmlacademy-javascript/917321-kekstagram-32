@@ -1,5 +1,5 @@
 function getStringLength (string, number) {
-  return(string.length <= number);
+  return string.length <= number;
 }
 
 // Проверка фукнции getStringLength
@@ -31,7 +31,7 @@ function getNumber(param) {
     const q = parseInt(firstString[i], 10);
 
     if (!Number.isNaN(q)){
-      newNumber += q;
+      newNumber += parseInt(q, 10);
     }
   }
   return (newNumber === '' ? NaN : newNumber);
