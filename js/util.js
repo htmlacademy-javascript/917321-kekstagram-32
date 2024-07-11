@@ -40,7 +40,4 @@ const getRandomId = (min, max) => {
 // функция нахождения случайного элемента массива
 const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
-export {getId};
-export {getRandomInteger};
-export {getRandomId};
-export {getRandomArrayElement};
+export {getId, getRandomInteger, getRandomId, getRandomArrayElement};

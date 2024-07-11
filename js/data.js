@@ -1,8 +1,4 @@
-import {getId} from './util.js';
-import {getRandomInteger} from './util.js';
-import {getRandomId} from './util.js';
-import {getRandomArrayElement} from './util.js';
-
+import {getId, getRandomInteger, getRandomId, getRandomArrayElement} from './util.js';
 
 //массив описаний для description
 const DESCRIPTIONS = [
