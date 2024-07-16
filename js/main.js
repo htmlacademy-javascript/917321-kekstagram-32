@@ -1,3 +1,4 @@
 import {otherPosts} from './data.js';
+import {generateThumbnails} from './thumbnail.js';
 
-console.log(otherPosts);
+generateThumbnails(otherPosts);

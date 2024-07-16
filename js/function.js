@@ -2,7 +2,7 @@ function convertToMinutes (time) {
   const [hour, minutes] = time.split(':');
   const minutesInOneHour = 60;
 
-  return hour * minutesInOneHour + parseInt(minutes, 10);
+  return parseInt(hour) * minutesInOneHour + parseInt(minutes, 10);
 }
 
 function checkMeeting(dayStart, dayEnd, meetingStart, meetingDuration) {
