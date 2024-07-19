@@ -10,17 +10,19 @@ const createThumbnail = ({url, description, likes, comments}) => {
   thumbnail.querySelector('.picture__comments').textContent = comments.length;
 
   return thumbnail;
-}
+};
 
 const generateThumbnails = (pictures) => {
-const fragment = document.createDocumentFragment();
+  const fragment = document.createDocumentFragment();
 
   pictures.forEach((picture) => {
-   const thumbnail = createThumbnail(picture);
-   fragment.append(thumbnail);
-});
+    const thumbnail = createThumbnail(picture);
+    thumbnail.setAttribute('data-id', picture.id);
+
+    fragment.append(thumbnail);
+  });
 
   container.append(fragment);
-}
+};
 
 export{generateThumbnails};
