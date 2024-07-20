@@ -10,15 +10,18 @@ const fullscreenPictureDescription = fullscreenPicture.querySelector('.social__c
 // для комментариев
 const commentTemplate = document.querySelector('#comment-template').content.querySelector('.social__comment');
 const commentsList = fullscreenPicture.querySelector('.social__comments');
-const fullscreenPictureCommentCount = fullscreenPicture.querySelector('.social__comment-count');
-const fullscreenPictureShowCommentCount = fullscreenPicture.querySelector('.social__comment-shown-count');
+const fullscreenPictureShowCommentsCount = fullscreenPicture.querySelector('.social__comment-shown-count');
 const fullscreenPictureTotalCommentCount = fullscreenPicture.querySelector('.social__comment-total-count');
 const fullscreenPictureLoadMoreComment = fullscreenPicture.querySelector('.comments-loader');
+
+const SHOW_COMMENTS_COUNT = 5;
 
 const fullscreenPictureLikesCount = fullscreenPicture.querySelector('.likes-count');
 const postsList = document.querySelector('.pictures');
 
+//объявляем функции
 let closeFullscreenPicture = function(){};
+let loadMoreComment = function(){};
 
 // закрываем окно с большой картинкой клавишей esc
 const onDocumentKeydown = (evt) => {
@@ -35,6 +38,8 @@ closeFullscreenPicture = () => {
   commentsList.innerHTML = '';
   document.removeEventListener('keydown', onDocumentKeydown);
   fullscreenPictureCloseButton.removeEventListener('click', closeFullscreenPicture);
+  fullscreenPictureLoadMoreComment.removeEventListener('click', loadMoreComment);
+
 };
 
 // открываем окно с большой картинкой
@@ -47,19 +52,51 @@ const openFullscreenPicture = () => {
 
 // отрисовывем комментарии
 const renderComments = (comments) => {
+
   const commentFragment = document.createDocumentFragment();
   commentsList.innerHTML = '';
 
-  comments.forEach((comment) => {
+  comments.forEach((comment, index) => {
     const commentItem = commentTemplate.cloneNode(true);
 
     commentItem.querySelector('.social__picture').src = comment.avatar;
     commentItem.querySelector('.social__picture').alt = comment.name;
     commentItem.querySelector('.social__text').textContent = comment.message;
+
+    if (index > SHOW_COMMENTS_COUNT - 1) {
+      commentItem.classList.add('hidden');//скрываем комментарии кроме 5 первых
+    }
     commentFragment.appendChild(commentItem);
   });
 
   commentsList.appendChild(commentFragment);
+};
+
+//обработчик кнопки загрузки комментариев
+loadMoreComment = () => {
+  const commentHiddenArray = commentsList.querySelectorAll('.social__comment.hidden');//находим массив скрытых комментариев
+  let countD = 0;
+
+  if(commentHiddenArray.length >= SHOW_COMMENTS_COUNT){
+    for (let i = 0; i < SHOW_COMMENTS_COUNT; i++){
+      commentHiddenArray[i].classList.remove('hidden');
+      countD++;
+    }
+  } else {
+    for (let i = 0; i < commentHiddenArray.length; i++){
+      commentHiddenArray[i].classList.remove('hidden');
+      countD++;
+    }
+  }
+
+  const currentShowedCommentsCount = parseInt(fullscreenPictureShowCommentsCount.textContent, 10);
+  const currentCommentsCount = currentShowedCommentsCount + countD;
+  fullscreenPictureShowCommentsCount.textContent = currentCommentsCount;
+
+  const commentArrayLenght = commentsList.querySelectorAll('.social__comment').length;
+  if (currentCommentsCount === commentArrayLenght){
+    fullscreenPictureLoadMoreComment.classList.add('hidden');
+  }
 };
 
 // отрисовываем большую картинку
@@ -67,11 +104,19 @@ const renderFullscreenPicture = (post) => {
   fullscreenPictureImage.src = post.url;
   fullscreenPictureLikesCount.textContent = post.likes;
   fullscreenPictureDescription.textContent = post.description;
-  fullscreenPictureShowCommentCount.textContent = post.comments.length; //все комментарии
+
+  //показываем число комментариев
+  if (post.comments.length <= SHOW_COMMENTS_COUNT) {
+    fullscreenPictureShowCommentsCount.textContent = post.comments.length;
+    fullscreenPictureLoadMoreComment.classList.add('hidden');
+  } else {
+    fullscreenPictureShowCommentsCount.textContent = SHOW_COMMENTS_COUNT;
+    fullscreenPictureLoadMoreComment.classList.remove('hidden');
+    fullscreenPictureLoadMoreComment.addEventListener('click', loadMoreComment);
+  }
+
   fullscreenPictureTotalCommentCount.textContent = post.comments.length;
-
   renderComments(post.comments);
-
   openFullscreenPicture();
 };
 
@@ -85,8 +130,6 @@ postsList.addEventListener('click', (evt) => {
     if (renderPost) {
       evt.preventDefault();
       renderFullscreenPicture(renderPost);
-      fullscreenPictureCommentCount.classList.add('hidden');
-      fullscreenPictureLoadMoreComment.classList.add('hidden');
     }
   }
 });
