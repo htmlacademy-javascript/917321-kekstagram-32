@@ -19,10 +19,6 @@ const SHOW_COMMENTS_COUNT = 5;
 const fullscreenPictureLikesCount = fullscreenPicture.querySelector('.likes-count');
 const postsList = document.querySelector('.pictures');
 
-//объявляем функции
-let closeFullscreenPicture = function(){};
-let loadMoreComment = function(){};
-
 // закрываем окно с большой картинкой клавишей esc
 const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -32,15 +28,14 @@ const onDocumentKeydown = (evt) => {
 };
 
 // закрываем окно с большой картинкой крестиком
-closeFullscreenPicture = () => {
+function closeFullscreenPicture () {
   fullscreenPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
   commentsList.innerHTML = '';
   document.removeEventListener('keydown', onDocumentKeydown);
   fullscreenPictureCloseButton.removeEventListener('click', closeFullscreenPicture);
   fullscreenPictureLoadMoreComment.removeEventListener('click', loadMoreComment);
-
-};
+}
 
 // открываем окно с большой картинкой
 const openFullscreenPicture = () => {
@@ -73,31 +68,24 @@ const renderComments = (comments) => {
 };
 
 //обработчик кнопки загрузки комментариев
-loadMoreComment = () => {
+function loadMoreComment () {
   const commentHiddenArray = commentsList.querySelectorAll('.social__comment.hidden');//находим массив скрытых комментариев
-  let countD = 0;
+  const countComment = Math.min(commentHiddenArray.length, SHOW_COMMENTS_COUNT);
 
-  if(commentHiddenArray.length >= SHOW_COMMENTS_COUNT){
-    for (let i = 0; i < SHOW_COMMENTS_COUNT; i++){
-      commentHiddenArray[i].classList.remove('hidden');
-      countD++;
-    }
-  } else {
-    for (let i = 0; i < commentHiddenArray.length; i++){
-      commentHiddenArray[i].classList.remove('hidden');
-      countD++;
-    }
+  for (let i = 0; i < countComment; i++){
+    commentHiddenArray[i].classList.remove('hidden');
   }
 
   const currentShowedCommentsCount = parseInt(fullscreenPictureShowCommentsCount.textContent, 10);
-  const currentCommentsCount = currentShowedCommentsCount + countD;
+  const currentCommentsCount = currentShowedCommentsCount + countComment;
   fullscreenPictureShowCommentsCount.textContent = currentCommentsCount;
 
   const commentArrayLenght = commentsList.querySelectorAll('.social__comment').length;
   if (currentCommentsCount === commentArrayLenght){
     fullscreenPictureLoadMoreComment.classList.add('hidden');
   }
-};
+}
+
 
 // отрисовываем большую картинку
 const renderFullscreenPicture = (post) => {
