@@ -1,4 +1,10 @@
 import {isEscapeKey} from './util.js';// импортируем определение кнопки Escape
+import {resetScale} from './scale.js'; // импортируем функцию для масштабирования
+import {
+  init as initEffect,
+  reset as resetEffect
+} from './effect.js';//импортируем функции для фильтров фото
+
 
 const MAX_HASHTAG_COUNT = 5;//максимальное число хэштегов
 const VALID_SYMBOLS = /^#[a-zа-яё0-9]{1,19}$/i;//валидные значения для хэштегов
@@ -31,6 +37,8 @@ const showModal = () => {//показать модалку
 const hideModal = () => {//скрыть модалку
   form.reset();//сбросить значения формы
   pristine.reset();//сбросить значения валидатора
+  resetScale();//сбросить значения масштабирования
+  resetEffect();//сбросить значения фильтров
   overlay.classList.add('hidden');
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
@@ -100,3 +108,4 @@ pristine.addValidator(
 fileField.addEventListener('change', onFileInputChange);
 cancelButton.addEventListener('click', onCancelButtonClick);
 form.addEventListener('submit', onFormSubmit);
+initEffect();
