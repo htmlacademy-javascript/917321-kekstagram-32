@@ -20,7 +20,20 @@ const normalizeTags = (tagString) => tagString
   .toLowerCase()//приводим к нижнему регистру
   .split(' ');//разбиваем на массив через пробел
 
-const hasValidTags = (value) => normalizeTags(value).every((tag)=>VALID_SYMBOLS.test(tag));//проходимся по каждому хэштегу в массиве
+//проверяем на валидные значения (прошлая проверка на пропускала публикацию без тэгов)
+function hasValidTags(value) {
+  if (value === ''){
+    return true;
+  }
+  const array = normalizeTags(value);
+
+  for (let i = 0; i < array.length; i++) {
+    if (!VALID_SYMBOLS.test(array[i])) {
+      return false;
+    }
+  }
+  return true;
+}
 
 const hasValidHashCount = (value) => normalizeTags(value).length <= MAX_HASHTAG_COUNT;//проверяем, что хэштегов в массиве не больше 5
 
@@ -53,4 +66,4 @@ pristine.addValidator(
   true
 );
 
-export {pristine};
+export { pristine };
