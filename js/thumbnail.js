@@ -1,5 +1,7 @@
+import { renderFullscreenPicture } from './fullscreenpost';
+
 const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
-const container = document.querySelector('.pictures');
+const postsList = document.querySelector('.pictures');
 
 const createThumbnail = ({url, description, likes, comments}) => {
   const thumbnail = thumbnailTemplate.cloneNode(true);
@@ -22,7 +24,17 @@ const generateThumbnails = (pictures) => {
     fragment.append(thumbnail);
   });
 
-  container.append(fragment);
+  postsList.append(fragment);
+
+  // обработчик клика по миниатюре перенесла из модуля fullscreenpost
+  postsList.addEventListener('click', (evt) => {
+    const target = evt.target.closest('.picture');
+
+    if (target) {
+      evt.preventDefault();
+      renderFullscreenPicture(pictures[target.getAttribute('data-id')]);
+    }
+  });
 };
 
 export{ generateThumbnails };
