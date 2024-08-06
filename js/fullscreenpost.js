@@ -1,5 +1,4 @@
-import {otherPosts} from './data.js';
-import {isEscapeKey} from './util.js';
+import { isEscapeKey } from './util.js';
 
 // необходимые переменные
 const fullscreenPicture = document.querySelector('.big-picture');
@@ -18,6 +17,11 @@ const SHOW_COMMENTS_COUNT = 5;
 
 const fullscreenPictureLikesCount = fullscreenPicture.querySelector('.likes-count');
 const postsList = document.querySelector('.pictures');
+
+let picturesData = [];
+const getPicturesData = (data) => {
+  picturesData = data;
+};
 
 // закрываем окно с большой картинкой клавишей esc
 const onDocumentKeydown = (evt) => {
@@ -86,7 +90,6 @@ function loadMoreComment () {
   }
 }
 
-
 // отрисовываем большую картинку
 const renderFullscreenPicture = (post) => {
   fullscreenPictureImage.src = post.url;
@@ -113,7 +116,7 @@ postsList.addEventListener('click', (evt) => {
   if (evt.target.closest('.picture')) {
 
     const postId = parseInt(evt.target.closest('.picture').getAttribute('data-id'), 10);
-    const renderPost = otherPosts.find((data) => data.id === postId);
+    const renderPost = picturesData.find((data) => data.id === postId);
 
     if (renderPost) {
       evt.preventDefault();
@@ -121,3 +124,5 @@ postsList.addEventListener('click', (evt) => {
     }
   }
 });
+
+export { getPicturesData };

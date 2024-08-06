@@ -25,4 +25,4 @@ const generateThumbnails = (pictures) => {
   container.append(fragment);
 };
 
-export{generateThumbnails};
+export{ generateThumbnails };

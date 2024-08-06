@@ -1,7 +1,24 @@
-import {otherPosts} from './data.js';
-import {generateThumbnails} from './thumbnail.js';
-import './form.js';
+import { getData, sendData } from './api.js';
+import { generateThumbnails } from './thumbnail.js';
+import { getPicturesData } from './fullscreenpost.js';
+import { showAlert } from './util.js';
+import { setOnFormSubmit, hideModal } from './form.js';
+import { showSuccessMessage, showErrorMessage } from './message.js';
 
-generateThumbnails(otherPosts);
+setOnFormSubmit(async(data)=>{
+  try {
+    await sendData(data);
+    hideModal();
+    showSuccessMessage();
+  } catch {
+    showErrorMessage();
+  }
+});
 
-import './fullscreenpost.js';
+try {
+  const data = await getData();
+  generateThumbnails(data);
+  getPicturesData(data);
+} catch {
+  showAlert();
+}
