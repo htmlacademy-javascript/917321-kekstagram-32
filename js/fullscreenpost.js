@@ -16,12 +16,6 @@ const fullscreenPictureLoadMoreComment = fullscreenPicture.querySelector('.comme
 const SHOW_COMMENTS_COUNT = 5;
 
 const fullscreenPictureLikesCount = fullscreenPicture.querySelector('.likes-count');
-const postsList = document.querySelector('.pictures');
-
-let picturesData = [];
-const getPicturesData = (data) => {
-  picturesData = data;
-};
 
 // закрываем окно с большой картинкой клавишей esc
 const onDocumentKeydown = (evt) => {
@@ -111,18 +105,4 @@ const renderFullscreenPicture = (post) => {
   openFullscreenPicture();
 };
 
-// обработчик клика по миниатюре
-postsList.addEventListener('click', (evt) => {
-  if (evt.target.closest('.picture')) {
-
-    const postId = parseInt(evt.target.closest('.picture').getAttribute('data-id'), 10);
-    const renderPost = picturesData.find((data) => data.id === postId);
-
-    if (renderPost) {
-      evt.preventDefault();
-      renderFullscreenPicture(renderPost);
-    }
-  }
-});
-
-export { getPicturesData };
+export { renderFullscreenPicture };
