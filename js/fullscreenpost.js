@@ -1,5 +1,7 @@
 import { isEscapeKey } from './util.js';
 
+const SHOW_COMMENTS_COUNT = 5;
+
 // необходимые переменные
 const fullscreenPicture = document.querySelector('.big-picture');
 const fullscreenPictureCloseButton = fullscreenPicture.querySelector('.big-picture__cancel');
@@ -12,8 +14,6 @@ const commentsList = fullscreenPicture.querySelector('.social__comments');
 const fullscreenPictureShowCommentsCount = fullscreenPicture.querySelector('.social__comment-shown-count');
 const fullscreenPictureTotalCommentCount = fullscreenPicture.querySelector('.social__comment-total-count');
 const fullscreenPictureLoadMoreComment = fullscreenPicture.querySelector('.comments-loader');
-
-const SHOW_COMMENTS_COUNT = 5;
 
 const fullscreenPictureLikesCount = fullscreenPicture.querySelector('.likes-count');
 
