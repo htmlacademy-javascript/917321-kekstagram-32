@@ -11,6 +11,8 @@ const SubmitButtonText = {
   SUBMITTING: 'Отправляю...',
 };
 
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+
 const body = document.querySelector('body');
 const form = document.querySelector('.img-upload__form');
 const overlay = form.querySelector('.img-upload__overlay');
@@ -19,6 +21,8 @@ const fileField = form.querySelector('.img-upload__input');
 const hashtagField = form.querySelector('.text__hashtags');
 const commentField = form.querySelector('.text__description');
 const submitButton = form.querySelector('.img-upload__submit');
+const photoPreview = form.querySelector('.img-upload__preview img');
+const effectsPreviews = form.querySelectorAll('.effects__preview');
 
 const showModal = () => {//показать модалку
   overlay.classList.remove('hidden');
@@ -51,6 +55,11 @@ const isTextFieldFocused = () =>//проверяем есть ли фокус н
 
 const isErrorMessageShown = () => Boolean(document.querySelector('.error'));
 
+const isValidType = (file) => {
+  const fileName = file.name.toLowerCase();
+  return FILE_TYPES.some((it) => fileName.endsWith(it));
+};
+
 function onDocumentKeydown(evt) {
   if (isEscapeKey(evt) && !isTextFieldFocused() && !isErrorMessageShown()){ //проверяем показывается ли сейчас ошибка
     evt.preventDefault();
@@ -63,6 +72,14 @@ function onCancelButtonClick () {
 }
 
 const onFileInputChange = () => {
+  const file = fileField.files[0];
+
+  if(file && isValidType(file)){
+    photoPreview.src = URL.createObjectURL(file);
+    effectsPreviews.forEach((preview) => {
+      preview.style.backgroungImage = `url('${photoPreview.src}')`;
+    });
+  }
   showModal();
 };
 
