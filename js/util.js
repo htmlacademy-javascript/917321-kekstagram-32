@@ -13,7 +13,6 @@ const showAlert = () => {
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-
 function debounce (callback, timeoutDelay = 500) {
   // Используем замыкания, чтобы id таймаута у нас навсегда приклеился
   // к возвращаемой функции с setTimeout, тогда мы его сможем перезаписывать

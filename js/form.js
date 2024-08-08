@@ -6,12 +6,12 @@ import {
 } from './effect.js';//импортируем функции для фильтров фото
 import { pristine } from './validation-form.js';
 
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+
 const SubmitButtonText = {
   IDLE: 'Опубликовать',
   SUBMITTING: 'Отправляю...',
 };
-
-const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
 const body = document.querySelector('body');
 const form = document.querySelector('.img-upload__form');

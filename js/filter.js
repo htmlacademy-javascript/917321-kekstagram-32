@@ -1,4 +1,5 @@
 const PICTURES_COUNT = 10;
+
 const Filter = {
   DEFAULT: 'filter-default',
   RANDOM: 'filter-random',
