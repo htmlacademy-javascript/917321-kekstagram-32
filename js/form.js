@@ -72,6 +72,8 @@ function onCancelButtonClick () {
 }
 
 const onFileInputChange = () => {
+  showModal();
+
   const file = fileField.files[0];
 
   if(file && isValidType(file)){
@@ -80,7 +82,6 @@ const onFileInputChange = () => {
       preview.style.backgroungImage = `url('${photoPreview.src}')`;
     });
   }
-  showModal();
 };
 
 const setOnFormSubmit = (callback) => {
