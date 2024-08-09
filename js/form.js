@@ -25,8 +25,8 @@ const photoPreview = form.querySelector('.img-upload__preview img');
 const effectsPreviews = form.querySelectorAll('.effects__preview');
 
 const showModal = () => {//показать модалку
-  body.classList.add('modal-open');
   overlay.classList.remove('hidden');
+  body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
   cancelButton.addEventListener('click', onCancelButtonClick);
 };
@@ -72,15 +72,19 @@ function onCancelButtonClick () {
 }
 
 const onFileInputChange = () => {
-  showModal();
 
   const file = fileField.files[0];
 
   if(file && isValidType(file)){
-    photoPreview.src = URL.createObjectURL(file);
-    effectsPreviews.forEach((preview) => {
-      preview.style.backgroungImage = `url('${photoPreview.src}')`;
+
+    const imageUrl = URL.createObjectURL(file);
+
+    photoPreview.src = imageUrl;
+
+    effectsPreviews.forEach((previewsItem) => {
+      previewsItem.style.backgroundImage = `url(${imageUrl})`;
     });
+    showModal();
   }
 };
 
