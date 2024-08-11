@@ -13,45 +13,45 @@ const SubmitButtonText = {
   SUBMITTING: 'Отправляю...',
 };
 
-const body = document.querySelector('body');
-const form = document.querySelector('.img-upload__form');
-const overlay = document.querySelector('.img-upload__overlay');
-const cancelButton = form.querySelector('.img-upload__cancel');
-const fileField = form.querySelector('.img-upload__input');
-const hashtagField = form.querySelector('.text__hashtags');
-const commentField = form.querySelector('.text__description');
-const submitButton = form.querySelector('.img-upload__submit');
-const photoPreview = form.querySelector('.img-upload__preview img');
-const effectsPreviews = form.querySelectorAll('.effects__preview');
+const bodyElement = document.querySelector('body');
+const formElement = document.querySelector('.img-upload__form');
+const overlayElement = document.querySelector('.img-upload__overlay');
+const cancelButtonElement = formElement.querySelector('.img-upload__cancel');
+const fileFieldElement = formElement.querySelector('.img-upload__input');
+const hashtagFieldElement = formElement.querySelector('.text__hashtags');
+const commentFieldElement = formElement.querySelector('.text__description');
+const submitButtonElement = formElement.querySelector('.img-upload__submit');
+const photoPreviewElement = formElement.querySelector('.img-upload__preview img');
+const effectsPreviewsElement = formElement.querySelectorAll('.effects__preview');
 
 const showModal = () => {//показать модалку
-  overlay.classList.remove('hidden');
-  body.classList.add('modal-open');
-  document.addEventListener('keydown', onDocumentKeydown);
-  cancelButton.addEventListener('click', onCancelButtonClick);
+  overlayElement.classList.remove('hidden');
+  bodyElement.classList.add('modal-open');
+  document.addEventListener('keydown', onDocumentKeydownClick);
+  cancelButtonElement.addEventListener('click', onCancelButtonClick);
 };
 
 const hideModal = () => {//скрыть модалку
-  overlay.classList.add('hidden');
-  form.reset();//сбросить значения формы
+  overlayElement.classList.add('hidden');
+  formElement.reset();//сбросить значения формы
   pristine.reset();//сбросить значения валидатора
   resetScale();//сбросить значения масштабирования
   resetEffect();//сбросить значения фильтров
-  body.classList.remove('modal-open');
-  document.removeEventListener('keydown', onDocumentKeydown);
-  cancelButton.removeEventListener('click', onCancelButtonClick);
+  bodyElement.classList.remove('modal-open');
+  document.removeEventListener('keydown', onDocumentKeydownClick);
+  cancelButtonElement.removeEventListener('click', onCancelButtonClick);
 };
 
 const toggleSubmitButton = (isDisabled) => {
-  submitButton.disabled = isDisabled;
-  submitButton.textContent = isDisabled
+  submitButtonElement.disabled = isDisabled;
+  submitButtonElement.textContent = isDisabled
     ? SubmitButtonText.SUBMITTING
     : SubmitButtonText.IDLE;
 };
 
 const isTextFieldFocused = () =>//проверяем есть ли фокус на полях ввода хэштега и комментариев
-  document.activeElement === hashtagField ||
-  document.activeElement === commentField;
+  document.activeElement === hashtagFieldElement ||
+  document.activeElement === commentFieldElement;
 
 const isErrorMessageShown = () => Boolean(document.querySelector('.error'));
 
@@ -60,7 +60,7 @@ const isValidType = (file) => {
   return FILE_TYPES.some((it) => fileName.endsWith(it));
 };
 
-function onDocumentKeydown(evt) {
+function onDocumentKeydownClick(evt) {
   if (isEscapeKey(evt) && !isTextFieldFocused() && !isErrorMessageShown()){ //проверяем показывается ли сейчас ошибка
     evt.preventDefault();
     hideModal();
@@ -73,15 +73,15 @@ function onCancelButtonClick () {
 
 const onFileInputChange = () => {
 
-  const file = fileField.files[0];
+  const file = fileFieldElement.files[0];
 
   if(file && isValidType(file)){
 
     const imageUrl = URL.createObjectURL(file);
 
-    photoPreview.src = imageUrl;
+    photoPreviewElement.src = imageUrl;
 
-    effectsPreviews.forEach((previewsItem) => {
+    effectsPreviewsElement.forEach((previewsItem) => {
       previewsItem.style.backgroundImage = `url(${imageUrl})`;
     });
     showModal();
@@ -89,20 +89,20 @@ const onFileInputChange = () => {
 };
 
 const setOnFormSubmit = (callback) => {
-  form.addEventListener('submit', async(evt) => {
+  formElement.addEventListener('submit', async(evt) => {
     evt.preventDefault();
     const isValid = pristine.validate();
 
     if(isValid){
       toggleSubmitButton(true);
-      await callback(new FormData(form));
+      await callback(new FormData(formElement));
       toggleSubmitButton();
     }
   });
 };
 
-fileField.addEventListener('change', onFileInputChange);
-cancelButton.addEventListener('click', onCancelButtonClick);
+fileFieldElement.addEventListener('change', onFileInputChange);
+cancelButtonElement.addEventListener('click', onCancelButtonClick);
 initEffect();
 
 export { setOnFormSubmit, hideModal };

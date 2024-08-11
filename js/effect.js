@@ -63,12 +63,12 @@ const effectToSliderOptions = {
   },
 };
 
-const modalWindow = document.querySelector('.img-upload');
-const modalPicture = modalWindow.querySelector('.img-upload__preview img');
-const effectsPreview = modalWindow.querySelector('.effects');
-const modalSliderContainer = modalWindow.querySelector('.img-upload__effect-level');
-const modalSlider = modalSliderContainer.querySelector('.effect-level__slider');
-const effectLevelElement = modalWindow.querySelector('.effect-level__value');
+const modalWindowElement = document.querySelector('.img-upload');
+const modalPictureElement = modalWindowElement.querySelector('.img-upload__preview img');
+const effectsPreviewElement = modalWindowElement.querySelector('.effects');
+const modalSliderContainer = modalWindowElement.querySelector('.img-upload__effect-level');
+const modalSliderElement = modalSliderContainer.querySelector('.effect-level__slider');
+const effectLevelElement = modalWindowElement.querySelector('.effect-level__value');
 
 let chosenEffect = EFFECT.DEFAULT;
 
@@ -76,13 +76,13 @@ const isDefault = () => chosenEffect === EFFECT.DEFAULT;
 
 const setImageStyle = () => {
   if (isDefault()){
-    modalPicture.style.filter = null;
+    modalPictureElement.style.filter = null;
     return;
   }
 
   const {value} = effectLevelElement;
   const {style,unit} = effectToFilter[chosenEffect];
-  modalPicture.style.filter = `${style}(${value}${unit})`;
+  modalPictureElement.style.filter = `${style}(${value}${unit})`;
 };
 
 const showSlider = () => {
@@ -94,12 +94,12 @@ const hideSlider = () => {
 };
 
 const onSliderUpdate = () => {
-  effectLevelElement.value = modalSlider.noUiSlider.get();
+  effectLevelElement.value = modalSliderElement.noUiSlider.get();
   setImageStyle();
 };
 
 const createSlider = ({min, max, step}) => {
-  noUiSlider.create(modalSlider, {
+  noUiSlider.create(modalSliderElement, {
     range: {min, max},
     step,
     start: max,
@@ -109,12 +109,12 @@ const createSlider = ({min, max, step}) => {
       from: (value) => Number(value),
     }
   });
-  modalSlider.noUiSlider.on('update', onSliderUpdate);
+  modalSliderElement.noUiSlider.on('update', onSliderUpdate);
   hideSlider();
 };
 
 const updateSlider = ({min, max, step}) => {
-  modalSlider.noUiSlider.updateOptions({
+  modalSliderElement.noUiSlider.updateOptions({
     range: {min, max},
     step,
     start: max,
@@ -146,7 +146,7 @@ const onEffectsChange = (evt) => {
 
 const init = () => {
   createSlider(effectToSliderOptions[chosenEffect]);
-  effectsPreview.addEventListener('change', onEffectsChange);
+  effectsPreviewElement.addEventListener('change', onEffectsChange);
 };
 
 export {init, reset};

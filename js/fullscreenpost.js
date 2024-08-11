@@ -3,22 +3,22 @@ import { isEscapeKey } from './util.js';
 const SHOW_COMMENTS_COUNT = 5;
 
 // необходимые переменные
-const fullscreenPicture = document.querySelector('.big-picture');
-const fullscreenPictureCloseButton = fullscreenPicture.querySelector('.big-picture__cancel');
-const fullscreenPictureImage = fullscreenPicture.querySelector('.big-picture__img img');
-const fullscreenPictureDescription = fullscreenPicture.querySelector('.social__caption');
+const fullscreenPictureElement = document.querySelector('.big-picture');
+const fullscreenPictureCloseButtonElement = fullscreenPictureElement.querySelector('.big-picture__cancel');
+const fullscreenPictureImageElement = fullscreenPictureElement.querySelector('.big-picture__img img');
+const fullscreenPictureDescriptionElement = fullscreenPictureElement.querySelector('.social__caption');
 
 // для комментариев
-const commentTemplate = document.querySelector('#comment-template').content.querySelector('.social__comment');
-const commentsList = fullscreenPicture.querySelector('.social__comments');
-const fullscreenPictureShowCommentsCount = fullscreenPicture.querySelector('.social__comment-shown-count');
-const fullscreenPictureTotalCommentCount = fullscreenPicture.querySelector('.social__comment-total-count');
-const fullscreenPictureLoadMoreComment = fullscreenPicture.querySelector('.comments-loader');
+const commentTemplateElement = document.querySelector('#comment-template').content.querySelector('.social__comment');
+const commentsListElement = fullscreenPictureElement.querySelector('.social__comments');
+const fullscreenPictureShowCommentsCountElement = fullscreenPictureElement.querySelector('.social__comment-shown-count');
+const fullscreenPictureTotalCommentCountElement = fullscreenPictureElement.querySelector('.social__comment-total-count');
+const fullscreenPictureLoadMoreCommentElement = fullscreenPictureElement.querySelector('.comments-loader');
 
-const fullscreenPictureLikesCount = fullscreenPicture.querySelector('.likes-count');
+const fullscreenPictureLikesCountElement = fullscreenPictureElement.querySelector('.likes-count');
 
 // закрываем окно с большой картинкой клавишей esc
-const onDocumentKeydown = (evt) => {
+const onDocumentKeydownClick = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closeFullscreenPicture();
@@ -27,30 +27,30 @@ const onDocumentKeydown = (evt) => {
 
 // закрываем окно с большой картинкой крестиком
 function closeFullscreenPicture () {
-  fullscreenPicture.classList.add('hidden');
+  fullscreenPictureElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  commentsList.innerHTML = '';
-  document.removeEventListener('keydown', onDocumentKeydown);
-  fullscreenPictureCloseButton.removeEventListener('click', closeFullscreenPicture);
-  fullscreenPictureLoadMoreComment.removeEventListener('click', loadMoreComment);
+  commentsListElement.innerHTML = '';
+  document.removeEventListener('keydown', onDocumentKeydownClick);
+  fullscreenPictureCloseButtonElement.removeEventListener('click', closeFullscreenPicture);
+  fullscreenPictureLoadMoreCommentElement.removeEventListener('click', onLoadMoreCommentsClick);
 }
 
 // открываем окно с большой картинкой
 const openFullscreenPicture = () => {
-  fullscreenPicture.classList.remove('hidden');
+  fullscreenPictureElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  document.addEventListener('keydown', onDocumentKeydown);
-  fullscreenPictureCloseButton.addEventListener('click', closeFullscreenPicture);
+  document.addEventListener('keydown', onDocumentKeydownClick);
+  fullscreenPictureCloseButtonElement.addEventListener('click', closeFullscreenPicture);
 };
 
 // отрисовывем комментарии
 const renderComments = (comments) => {
 
   const commentFragment = document.createDocumentFragment();
-  commentsList.innerHTML = '';
+  commentsListElement.innerHTML = '';
 
   comments.forEach((comment, index) => {
-    const commentItem = commentTemplate.cloneNode(true);
+    const commentItem = commentTemplateElement.cloneNode(true);
 
     commentItem.querySelector('.social__picture').src = comment.avatar;
     commentItem.querySelector('.social__picture').alt = comment.name;
@@ -62,47 +62,47 @@ const renderComments = (comments) => {
     commentFragment.appendChild(commentItem);
   });
 
-  commentsList.appendChild(commentFragment);
+  commentsListElement.appendChild(commentFragment);
 };
 
 //обработчик кнопки загрузки комментариев
-function loadMoreComment () {
-  const commentHiddenArray = commentsList.querySelectorAll('.social__comment.hidden');//находим массив скрытых комментариев
+function onLoadMoreCommentsClick () {
+  const commentHiddenArray = commentsListElement.querySelectorAll('.social__comment.hidden');//находим массив скрытых комментариев
   const countComment = Math.min(commentHiddenArray.length, SHOW_COMMENTS_COUNT);
 
   for (let i = 0; i < countComment; i++){
     commentHiddenArray[i].classList.remove('hidden');
   }
 
-  const currentShowedCommentsCount = parseInt(fullscreenPictureShowCommentsCount.textContent, 10);
+  const currentShowedCommentsCount = parseInt(fullscreenPictureShowCommentsCountElement.textContent, 10);
   const currentCommentsCount = currentShowedCommentsCount + countComment;
-  fullscreenPictureShowCommentsCount.textContent = currentCommentsCount;
+  fullscreenPictureShowCommentsCountElement.textContent = currentCommentsCount;
 
-  const commentArrayLenght = commentsList.querySelectorAll('.social__comment').length;
+  const commentArrayLenght = commentsListElement.querySelectorAll('.social__comment').length;
   if (currentCommentsCount === commentArrayLenght){
-    fullscreenPictureLoadMoreComment.classList.add('hidden');
+    fullscreenPictureLoadMoreCommentElement.classList.add('hidden');
   }
 }
 
 // отрисовываем большую картинку
-const renderFullscreenPicture = (post) => {
-  fullscreenPictureImage.src = post.url;
-  fullscreenPictureLikesCount.textContent = post.likes;
-  fullscreenPictureDescription.textContent = post.description;
+const onThumbnailClick = (post) => {
+  fullscreenPictureImageElement.src = post.url;
+  fullscreenPictureLikesCountElement.textContent = post.likes;
+  fullscreenPictureDescriptionElement.textContent = post.description;
 
   //показываем число комментариев
   if (post.comments.length <= SHOW_COMMENTS_COUNT) {
-    fullscreenPictureShowCommentsCount.textContent = post.comments.length;
-    fullscreenPictureLoadMoreComment.classList.add('hidden');
+    fullscreenPictureShowCommentsCountElement.textContent = post.comments.length;
+    fullscreenPictureLoadMoreCommentElement.classList.add('hidden');
   } else {
-    fullscreenPictureShowCommentsCount.textContent = SHOW_COMMENTS_COUNT;
-    fullscreenPictureLoadMoreComment.classList.remove('hidden');
-    fullscreenPictureLoadMoreComment.addEventListener('click', loadMoreComment);
+    fullscreenPictureShowCommentsCountElement.textContent = SHOW_COMMENTS_COUNT;
+    fullscreenPictureLoadMoreCommentElement.classList.remove('hidden');
+    fullscreenPictureLoadMoreCommentElement.addEventListener('click', onLoadMoreCommentsClick);
   }
 
-  fullscreenPictureTotalCommentCount.textContent = post.comments.length;
+  fullscreenPictureTotalCommentCountElement.textContent = post.comments.length;
   renderComments(post.comments);
   openFullscreenPicture();
 };
 
-export { renderFullscreenPicture };
+export { onThumbnailClick };

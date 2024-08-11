@@ -8,10 +8,10 @@ const ErrorText = {
   INVALID_PATTERN : 'Неправильный хэштег'
 };
 
-const form = document.querySelector('.img-upload__form');
-const hashtagField = form.querySelector('.text__hashtags');
+const formElement = document.querySelector('.img-upload__form');
+const hashtagFieldElement = formElement.querySelector('.text__hashtags');
 
-const pristine = new Pristine(form, {
+const pristine = new Pristine(formElement, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
   errorTextClass: 'img-upload__field-wrapper__error',
@@ -46,7 +46,7 @@ function hasUniqHash(value) {
 }
 
 pristine.addValidator(
-  hashtagField,
+  hashtagFieldElement,
   hasValidHashCount,
   ErrorText.INVALID_COUNT,
   3,
@@ -54,7 +54,7 @@ pristine.addValidator(
 );
 
 pristine.addValidator(
-  hashtagField,
+  hashtagFieldElement,
   hasUniqHash,
   ErrorText.NOT_UNIQ,
   2,
@@ -62,7 +62,7 @@ pristine.addValidator(
 );
 
 pristine.addValidator(
-  hashtagField,
+  hashtagFieldElement,
   hasValidTags,
   ErrorText.INVALID_PATTERN,
   1,
