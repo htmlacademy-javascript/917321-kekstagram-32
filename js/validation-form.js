@@ -8,44 +8,45 @@ const ErrorText = {
   INVALID_PATTERN : 'Неправильный хэштег'
 };
 
-const form = document.querySelector('.img-upload__form');
-const hashtagField = form.querySelector('.text__hashtags');
+const formElement = document.querySelector('.img-upload__form');
+const hashtagFieldElement = formElement.querySelector('.text__hashtags');
 
-const pristine = new Pristine(form, {
+const pristine = new Pristine(formElement, {
   classTo: 'img-upload__field-wrapper',
   errorTextParent: 'img-upload__field-wrapper',
   errorTextClass: 'img-upload__field-wrapper__error',
 });
 
-const normalizeTags = (tagString) => tagString
-  .trim()//удаляем пробелы в начале и конце хэштегов
-  .toLowerCase()//приводим к нижнему регистру
-  .split(' ');//разбиваем на массив через пробел
-
-//проверяем на валидные значения (прошлая проверка на пропускала публикацию без тэгов)
+//проверяем на валидные значения (прошлая проверка на пропускала публикацию без тэгов и с лишними пробелами)
 function hasValidTags(value) {
   if (value === ''){
     return true;
   }
-  const array = normalizeTags(value);
 
-  for (let i = 0; i < array.length; i++) {
-    if (!VALID_SYMBOLS.test(array[i])) {
+  const arrayTags = value.trim().toLowerCase().split(' ').filter(Boolean);
+
+  for (let i = 0; i < arrayTags.length; i++) {
+    if (!VALID_SYMBOLS.test(arrayTags[i])) {
       return false;
     }
   }
   return true;
 }
 
-const hasValidHashCount = (value) => normalizeTags(value).length <= MAX_HASHTAG_COUNT;//проверяем, что хэштегов в массиве не больше 5
+function hasValidHashCount(value) {
+  const arrayTags = value.trim().toLowerCase().split(' ').filter(Boolean);
 
-const hasUniqHash = (value) => {
-  const lowerCaseHash = normalizeTags(value);
-  return lowerCaseHash.length === new Set(lowerCaseHash).size;//проверяем есть ли повторы
-};
+  return arrayTags.length <= MAX_HASHTAG_COUNT;//проверяем, что хэштегов в массиве не больше 5
+}
+
+function hasUniqHash(value) {
+  const arrayTags = value.trim().toLowerCase().split(' ').filter(Boolean);
+
+  return arrayTags.length === new Set(arrayTags).size;//проверяем есть ли повторы
+}
 
 pristine.addValidator(
-  hashtagField,
+  hashtagFieldElement,
   hasValidHashCount,
   ErrorText.INVALID_COUNT,
   3,
@@ -53,7 +54,7 @@ pristine.addValidator(
 );
 
 pristine.addValidator(
-  hashtagField,
+  hashtagFieldElement,
   hasUniqHash,
   ErrorText.NOT_UNIQ,
   2,
@@ -61,7 +62,7 @@ pristine.addValidator(
 );
 
 pristine.addValidator(
-  hashtagField,
+  hashtagFieldElement,
   hasValidTags,
   ErrorText.INVALID_PATTERN,
   1,

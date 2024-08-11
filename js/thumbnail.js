@@ -1,7 +1,7 @@
-import { renderFullscreenPicture } from './fullscreenpost';
+import { onThumbnailClick } from './fullscreenpost';
 
 const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
-const postsList = document.querySelector('.pictures');
+const postsListElement = document.querySelector('.pictures');
 
 const createThumbnail = ({url, description, likes, comments}) => {
   const thumbnail = thumbnailTemplate.cloneNode(true);
@@ -15,7 +15,7 @@ const createThumbnail = ({url, description, likes, comments}) => {
 };
 
 const generateThumbnails = (pictures) => {
-  postsList.querySelectorAll('.picture').forEach((element) => element.remove());
+  postsListElement.querySelectorAll('.picture').forEach((element) => element.remove());
 
   const fragment = document.createDocumentFragment();
 
@@ -26,15 +26,15 @@ const generateThumbnails = (pictures) => {
     fragment.append(thumbnail);
   });
 
-  postsList.append(fragment);
+  postsListElement.append(fragment);
 
   // обработчик клика по миниатюре перенесла из модуля fullscreenpost
-  postsList.addEventListener('click', (evt) => {
+  postsListElement.addEventListener('click', (evt) => {
     const target = evt.target.closest('.picture');
 
     if (target) {
       evt.preventDefault();
-      renderFullscreenPicture(pictures[target.getAttribute('data-id')]);
+      onThumbnailClick(pictures[target.getAttribute('data-id')]);
     }
   });
 };
