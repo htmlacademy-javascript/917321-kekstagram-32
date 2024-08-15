@@ -1,7 +1,7 @@
 import { isEscapeKey } from './util.js';// импортируем определение кнопки Escape
 import { resetScale } from './scale.js'; // импортируем функцию для масштабирования
 import {
-  init as initEffect,
+  initEffect as initEffect,
   reset as resetEffect
 } from './effect.js';//импортируем функции для фильтров фото
 import { pristine } from './validation-form.js';

@@ -1,5 +1,3 @@
-import { onThumbnailClick } from './fullscreenpost';
-
 const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const postsListElement = document.querySelector('.pictures');
 
@@ -27,16 +25,6 @@ const generateThumbnails = (pictures) => {
   });
 
   postsListElement.append(fragment);
-
-  // обработчик клика по миниатюре перенесла из модуля fullscreenpost
-  postsListElement.addEventListener('click', (evt) => {
-    const target = evt.target.closest('.picture');
-
-    if (target) {
-      evt.preventDefault();
-      onThumbnailClick(pictures[target.getAttribute('data-id')]);
-    }
-  });
 };
 
 export{ generateThumbnails };
