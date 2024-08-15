@@ -1,7 +1,5 @@
-import { onThumbnailClick } from './fullscreenpost';
-
 const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
-const postsListElement = document.querySelector('.pictures');
+const postsList = document.querySelector('.pictures');
 
 const createThumbnail = ({url, description, likes, comments}) => {
   const thumbnail = thumbnailTemplate.cloneNode(true);
@@ -15,7 +13,7 @@ const createThumbnail = ({url, description, likes, comments}) => {
 };
 
 const generateThumbnails = (pictures) => {
-  postsListElement.querySelectorAll('.picture').forEach((element) => element.remove());
+  postsList.querySelectorAll('.picture').forEach((element) => element.remove());
 
   const fragment = document.createDocumentFragment();
 
@@ -26,17 +24,8 @@ const generateThumbnails = (pictures) => {
     fragment.append(thumbnail);
   });
 
-  postsListElement.append(fragment);
+  postsList.append(fragment);
 
-  // обработчик клика по миниатюре перенесла из модуля fullscreenpost
-  postsListElement.addEventListener('click', (evt) => {
-    const target = evt.target.closest('.picture');
-
-    if (target) {
-      evt.preventDefault();
-      onThumbnailClick(pictures[target.getAttribute('data-id')]);
-    }
-  });
 };
 
 export{ generateThumbnails };

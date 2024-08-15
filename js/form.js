@@ -1,7 +1,7 @@
 import { isEscapeKey } from './util.js';// импортируем определение кнопки Escape
 import { resetScale } from './scale.js'; // импортируем функцию для масштабирования
 import {
-  init as initEffect,
+  initializationEffects as initEffect,
   reset as resetEffect
 } from './effect.js';//импортируем функции для фильтров фото
 import { pristine } from './validation-form.js';
@@ -71,7 +71,7 @@ function onCancelButtonClick () {
   hideModal();
 }
 
-const onFileInputChange = () => {
+const changeFileInput = () => {
 
   const file = fileFieldElement.files[0];
 
@@ -101,7 +101,7 @@ const setOnFormSubmit = (callback) => {
   });
 };
 
-fileFieldElement.addEventListener('change', onFileInputChange);
+fileFieldElement.addEventListener('change', changeFileInput);
 cancelButtonElement.addEventListener('click', onCancelButtonClick);
 initEffect();
 

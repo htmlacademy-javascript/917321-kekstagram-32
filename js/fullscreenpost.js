@@ -17,8 +17,10 @@ const fullscreenPictureLoadMoreCommentElement = fullscreenPictureElement.querySe
 
 const fullscreenPictureLikesCountElement = fullscreenPictureElement.querySelector('.likes-count');
 
+// const postsList = document.querySelector('.pictures');
+
 // закрываем окно с большой картинкой клавишей esc
-const onDocumentKeydownClick = (evt) => {
+const clickOnDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closeFullscreenPicture();
@@ -30,7 +32,7 @@ function closeFullscreenPicture () {
   fullscreenPictureElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
   commentsListElement.innerHTML = '';
-  document.removeEventListener('keydown', onDocumentKeydownClick);
+  document.removeEventListener('keydown', clickOnDocumentKeydown);
   fullscreenPictureCloseButtonElement.removeEventListener('click', closeFullscreenPicture);
   fullscreenPictureLoadMoreCommentElement.removeEventListener('click', onLoadMoreCommentsClick);
 }
@@ -39,7 +41,7 @@ function closeFullscreenPicture () {
 const openFullscreenPicture = () => {
   fullscreenPictureElement.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  document.addEventListener('keydown', onDocumentKeydownClick);
+  document.addEventListener('keydown', clickOnDocumentKeydown);
   fullscreenPictureCloseButtonElement.addEventListener('click', closeFullscreenPicture);
 };
 
@@ -85,7 +87,7 @@ function onLoadMoreCommentsClick () {
 }
 
 // отрисовываем большую картинку
-const onThumbnailClick = (post) => {
+const clickOnThumbnail = (post) => {
   fullscreenPictureImageElement.src = post.url;
   fullscreenPictureLikesCountElement.textContent = post.likes;
   fullscreenPictureDescriptionElement.textContent = post.description;
@@ -105,4 +107,4 @@ const onThumbnailClick = (post) => {
   openFullscreenPicture();
 };
 
-export { onThumbnailClick };
+export { clickOnThumbnail };

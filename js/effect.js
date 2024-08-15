@@ -67,7 +67,7 @@ const modalWindowElement = document.querySelector('.img-upload');
 const modalPictureElement = modalWindowElement.querySelector('.img-upload__preview img');
 const effectsPreviewElement = modalWindowElement.querySelector('.effects');
 const modalSliderContainer = modalWindowElement.querySelector('.img-upload__effect-level');
-const modalSliderElement = modalSliderContainer.querySelector('.effect-level__slider');
+const modalSlider = modalSliderContainer.querySelector('.effect-level__slider');
 const effectLevelElement = modalWindowElement.querySelector('.effect-level__value');
 
 let chosenEffect = EFFECT.DEFAULT;
@@ -93,13 +93,13 @@ const hideSlider = () => {
   modalSliderContainer.classList.add('hidden');
 };
 
-const onSliderUpdate = () => {
-  effectLevelElement.value = modalSliderElement.noUiSlider.get();
+const changeSlider = () => {
+  effectLevelElement.value = modalSlider.noUiSlider.get();
   setImageStyle();
 };
 
 const createSlider = ({min, max, step}) => {
-  noUiSlider.create(modalSliderElement, {
+  noUiSlider.create(modalSlider, {
     range: {min, max},
     step,
     start: max,
@@ -109,12 +109,12 @@ const createSlider = ({min, max, step}) => {
       from: (value) => Number(value),
     }
   });
-  modalSliderElement.noUiSlider.on('update', onSliderUpdate);
+  modalSlider.noUiSlider.on('update', changeSlider);
   hideSlider();
 };
 
 const updateSlider = ({min, max, step}) => {
-  modalSliderElement.noUiSlider.updateOptions({
+  modalSlider.noUiSlider.updateOptions({
     range: {min, max},
     step,
     start: max,
@@ -140,13 +140,13 @@ const reset = () => {
   setEffect(EFFECT.DEFAULT);
 };
 
-const onEffectsChange = (evt) => {
+const changeEffects = (evt) => {
   setEffect(evt.target.value);
 };
 
-const init = () => {
+const initializationEffects = () => {
   createSlider(effectToSliderOptions[chosenEffect]);
-  effectsPreviewElement.addEventListener('change', onEffectsChange);
+  effectsPreviewElement.addEventListener('change', changeEffects);
 };
 
-export {init, reset};
+export {initializationEffects, reset};
