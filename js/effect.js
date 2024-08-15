@@ -136,7 +136,7 @@ const setEffect = (effect) => {
   setImageStyle();
 };
 
-const reset = () => {
+const resetEffect = () => {
   setEffect(EFFECT.DEFAULT);
 };
 
@@ -149,4 +149,4 @@ const initEffect = () => {
   effectsPreviewElement.addEventListener('change', onEffectsChange);
 };
 
-export {initEffect, reset};
+export {initEffect, resetEffect};
